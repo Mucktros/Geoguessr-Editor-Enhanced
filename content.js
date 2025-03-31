@@ -331,8 +331,8 @@ function cleanupSeterraEditor() {
   `;
   document.head.appendChild(darkModeStyle);
 
-  keydownListener = (e) => {
-    if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) return;
+keydownListener = (e) => {
+    if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Enter'].includes(e.key)) return;
     
     const dotCircle = document.querySelector('.hitbox-dot_dot__laacR:hover, .hitbox-dot_dot__laacR.selected');
     if (!dotCircle) return;
@@ -346,11 +346,16 @@ function cleanupSeterraEditor() {
 
     try {
       const transform = dotGroup.getAttribute('transform');
-      const coords = transform.match(/translate\(([\d.]+)[,\s]+([\d.]+)\)/);
+      const coords = transform.match(/translate\(([-\d.]+)[,\s]+([-\d.]+)\)/);
       if (!coords) return;
 
       let x = Number(coords[1]);
       let y = Number(coords[2]);
+
+      if (e.key === 'Enter') {
+        moveMouseAndClick(dotGroup, x, y);
+        return;
+      }
 
       const moveAmount = e.shiftKey ? 2 : 0.5;
       switch (e.key) {
@@ -372,6 +377,30 @@ function cleanupSeterraEditor() {
     }
   };
 
+  function moveMouseAndClick(dotGroup) {
+    if (!dotGroup) return;
+
+    const circle = dotGroup.querySelector('circle');
+    if (!circle) return;
+
+    const bbox = circle.getBoundingClientRect();
+    const x = bbox.left + bbox.width / 2;
+    const y = bbox.top + bbox.height / 2;
+
+    const events = ['mousedown', 'mouseup', 'click'];
+
+    events.forEach(eventType => {
+      const event = new MouseEvent(eventType, {
+        bubbles: true,
+        cancelable: true,
+        clientX: x,
+        clientY: y
+      });
+      circle.dispatchEvent(event);
+    });
+}
+
+
   document.addEventListener('keydown', keydownListener);
   document.addEventListener('click', clickListener);
 
@@ -383,7 +412,8 @@ function cleanupSeterraEditor() {
     }
   `;
   document.head.appendChild(selectionStyle);
-}
+  
+ }
 
 cleanupSeterraEditor();
 
