@@ -311,6 +311,26 @@ function cleanupSeterraEditor() {
   `;
   document.head.appendChild(style);
 
+  const darkModeStyle = document.createElement('style');
+  darkModeStyle.innerHTML = `
+    .seterra_content__nGh5_ {
+      background: #444444 !important;
+      color: black !important; /* Changed color to black for better contrast */
+    }
+    .seterra_main__mwfLw {
+      background: #444444 !important;
+      color: black !important; /* Changed color to black for better contrast */
+    }
+    .button_button__aR6_e {
+      color: black !important; /* Changed color to black for better contrast */
+    }
+    .highscore_table__oKrYg {
+      color: black !important;
+      background-color: #444444;
+    }
+  `;
+  document.head.appendChild(darkModeStyle);
+
   keydownListener = (e) => {
     if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) return;
     
