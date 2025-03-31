@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "Geoguessr Editor Enhanced",
+  "version": "1.0",
+  "description": "Make The Geoguessr Editor Usable And Look Better",
+  "permissions": [
+    "activeTab",
+    "scripting"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.geoguessr.com/quiz/seterra/challenge/edit/*",
+        "https://www.geoguessr.com/quiz/seterra/challenge/create/*"
+      ],
+      "js": [ "content.js" ]
+    }
+  ]
+}
